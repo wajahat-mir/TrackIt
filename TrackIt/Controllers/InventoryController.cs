@@ -77,6 +77,20 @@ namespace TrackIt.Controllers
             return inventoryItem;
         }
 
+        // GET: api/Inventory/Toaster
+        [HttpGet("{Name}")]
+        public async Task<ActionResult<InventoryItem>> GetInventoryItemByNameAsync(string name)
+        {
+            var inventoryItem = await _context.InventoryItems.SingleAsync(i => i.Name == name);
+
+            if (inventoryItem == null)
+            {
+                return NotFound();
+            }
+
+            return inventoryItem;
+        }
+
         // POST: api/Inventory
         [HttpPost]
         public async Task<ActionResult<InventoryItem>> PostInventoryItem(InventoryItem inventoryItem)
@@ -116,19 +130,6 @@ namespace TrackIt.Controllers
             await _context.SaveChangesAsync();
 
             return inventoryItem;
-        }
-
-
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
-        {
-            var user = _userService.Authenticate(userParam.Username, userParam.Password);
-
-            if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
-
-            return Ok(user);
         }
 
     }
