@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TrackIt.Entities;
 using TrackIt.Models;
-using static TrackIt.Services;
 
 namespace TrackIt.Controllers
 {
@@ -17,11 +16,9 @@ namespace TrackIt.Controllers
     public class InventoryController : Controller
     {
         private readonly InventoryContext _context;
-        private IUserService _userService;
 
-        public InventoryController(InventoryContext context, IUserService userService)
+        public InventoryController(InventoryContext context)
         {
-            _userService = userService;
             _context = context;
 
             if (_context.InventoryItems.Count() == 0)

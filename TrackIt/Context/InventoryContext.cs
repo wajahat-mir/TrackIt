@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TrackIt.Entities;
 using TrackIt.Models;
 
 namespace TrackIt.Models
@@ -19,6 +20,7 @@ namespace TrackIt.Models
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Dimension> Dimesions { get; set; }
+        public DbSet<User> Users { get; set; }
 
     }
 }
