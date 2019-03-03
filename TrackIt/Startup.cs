@@ -33,8 +33,9 @@ namespace TrackIt
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = @"Data Source=localhost;Initial Catalog=TrackItDB;User ID=sa;Password=Winter@2018;";
             services.AddDbContext<InventoryContext>(opt =>
-                opt.UseInMemoryDatabase("InventoryList"));
+                opt.UseSqlServer(connection));
 
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

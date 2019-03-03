@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TrackIt.Entities;
+using TrackIt.Filters;
 using TrackIt.Models;
 
 namespace TrackIt.Controllers
@@ -25,7 +26,6 @@ namespace TrackIt.Controllers
             {
                 _context.InventoryItems.Add(new InventoryItem
                 {
-                    Id = 1234567890,
                     Name = "Toaster",
                     Cost = 6.93,
                     Quantity = 1,
@@ -75,7 +75,7 @@ namespace TrackIt.Controllers
         }
 
         // GET: api/Inventory/Toaster
-        [HttpGet("{Name}")]
+        [HttpGet("ByName/{Name}")]
         public async Task<ActionResult<InventoryItem>> GetInventoryItemByNameAsync(string name)
         {
             var inventoryItem = await _context.InventoryItems.SingleAsync(i => i.Name == name);
@@ -90,6 +90,7 @@ namespace TrackIt.Controllers
 
         // POST: api/Inventory
         [HttpPost]
+        [ValidateModel]
         public async Task<ActionResult<InventoryItem>> PostInventoryItem(InventoryItem inventoryItem)
         {
             _context.InventoryItems.Add(inventoryItem);
@@ -100,6 +101,7 @@ namespace TrackIt.Controllers
 
         // PUT: api/Inventory/5
         [HttpPut("{id}")]
+        [ValidateModel]
         public async Task<IActionResult> PutInventoryItem(long id, InventoryItem inventoryItem)
         {
             if (id != inventoryItem.Id)
