@@ -15,6 +15,8 @@ using TrackIt.Helpers;
 using AutoMapper;
 using TrackIt.Services;
 using TrackIt.Dtos;
+using TrackIt.Models;
+using TrackIt.Filters;
 
 namespace TrackIt.Controllers
 {
@@ -26,10 +28,7 @@ namespace TrackIt.Controllers
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
 
-        public UsersController(
-            IUserService userService,
-            IMapper mapper,
-            IOptions<AppSettings> appSettings)
+        public UsersController(IUserService userService, IMapper mapper, IOptions<AppSettings> appSettings)
         {
             _userService = userService;
             _mapper = mapper;
@@ -71,6 +70,7 @@ namespace TrackIt.Controllers
         }
 
         [AllowAnonymous]
+        [ValidateModel]
         [HttpPost("register")]
         public IActionResult Register([FromBody]UserDto userDto)
         {

@@ -13,13 +13,13 @@ namespace TrackIt.Models
         public InventoryContext(DbContextOptions<InventoryContext> options)
             : base(options)
         {
-
+            this.Database.EnsureCreated();
         }
 
         public DbSet<InventoryItem> InventoryItems { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Dimension> Dimesions { get; set; }
+        public DbSet<Dimension> Dimensions { get; set; }
         public DbSet<User> Users { get; set; }
 
     }

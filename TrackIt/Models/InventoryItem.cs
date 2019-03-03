@@ -8,12 +8,16 @@ namespace TrackIt.Models
 {
     public class InventoryItem
     {
-        [Key]
         public long Id { get; set; }
+        [Required, MaxLength(100)]
         public string Name { get; set; }
+        [Required, DataType(DataType.Currency)]
         public double Cost { get; set; }
+        [Required]
         public Dimension dimensions { get; set; }
+        [Required]
         public long Quantity { get; set; }
+        [Required]
         public Brand brand { get; set; }
     }
 }
