@@ -9,9 +9,7 @@ namespace TrackIt.Models
 {
     public class Dimension
     {
-        [Key]
-        [ForeignKey("Inventory")]
-        public long InventoryId { get; set; }
+        public long Id { get; set; }
         [Required]
         public long length { get; set; }
         [Required]
@@ -20,5 +18,7 @@ namespace TrackIt.Models
         public long depth { get; set; }
         [Required]
         public string units { get; set; }
+
+        public InventoryItem InventoryItem { get; set; }
     }
 }
