@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using GraphiQl;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +24,9 @@ namespace TrackIt
 {
     public class Startup
     {
+
+        public const string GraphQlPath = "/api/graphql";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -83,6 +87,7 @@ namespace TrackIt
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<InventoryService>();
 
         }
 
@@ -107,6 +112,8 @@ namespace TrackIt
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseGraphiQl(GraphQlPath);
         }
     }
 }
