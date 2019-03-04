@@ -8,12 +8,15 @@ namespace TrackIt.Models
 {
     public class Brand
     {
-        public long BrandId { get; set; }
+        public long Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
         public string ContactPhone { get; set; }
-        [Required]
+
+        public long AddressId { get; set; }
         public Address CompanyAddress { get; set; }
+
+        public List<InventoryItem> InventoryItems { get; set; }
     }
 }

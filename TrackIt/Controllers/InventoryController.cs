@@ -26,17 +26,17 @@ namespace TrackIt.Controllers
             {
                 _context.InventoryItems.Add(new InventoryItem
                 {
-                    Name = "Toaster",
+                    ItemName = "Toaster",
                     Cost = 6.93,
                     Quantity = 1,
-                    dimensions = new Dimension
+                    Dimension = new Dimension
                     {
-                        length = 10,
-                        width = 10,
-                        depth = 5,
-                        units = "inches"
+                        length = 1,
+                        width = 2,
+                        depth = 3,
+                        units = "cm"
                     },
-                    brand = new Brand
+                    Brand = new Brand
                     {
                         Name = "ToastMaster",
                         ContactPhone = "1234567980",
@@ -78,7 +78,7 @@ namespace TrackIt.Controllers
         [HttpGet("ByName/{Name}")]
         public async Task<ActionResult<InventoryItem>> GetInventoryItemByNameAsync(string name)
         {
-            var inventoryItem = await _context.InventoryItems.SingleAsync(i => i.Name == name);
+            InventoryItem inventoryItem = await _context.InventoryItems.SingleAsync(i => i.ItemName == name);
 
             if (inventoryItem == null)
             {
@@ -96,7 +96,7 @@ namespace TrackIt.Controllers
             _context.InventoryItems.Add(inventoryItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("InventoryItem", new { id = inventoryItem.Id }, inventoryItem);
+            return CreatedAtAction("GetInventoryItem", new { id = inventoryItem.Id }, inventoryItem);
         }
 
         // PUT: api/Inventory/5
@@ -104,6 +104,7 @@ namespace TrackIt.Controllers
         [ValidateModel]
         public async Task<IActionResult> PutInventoryItem(long id, InventoryItem inventoryItem)
         {
+
             if (id != inventoryItem.Id)
             {
                 return BadRequest();
