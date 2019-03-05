@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackIt.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrackIt.Services
 {
     public class InventoryService
     {
-        private InventoryContext _context;
+        private readonly InventoryContext _context;
 
         public InventoryService(InventoryContext context)
         {
@@ -22,8 +23,20 @@ namespace TrackIt.Services
 
         public InventoryItem GetInventoryById(int id)
         {
-            return _context.InventoryItems
-                .Where(item => item.Id == id).FirstOrDefault<InventoryItem>();
+            var inventoryitem = _context.InventoryItems
+                .Include(item => item.Dimension)
+                .Include(item => item.Brand)
+                    .ThenInclude(brand => brand.CompanyAddress)
+                .FirstOrDefault<InventoryItem>();
+            return inventoryitem;
+        }
+
+        public Brand GetBrandById(int id)
+        {
+            var brand = _context.Brands
+                .Include(item => item.CompanyAddress)
+                .FirstOrDefault<Brand>();
+            return brand;
         }
     }
 
