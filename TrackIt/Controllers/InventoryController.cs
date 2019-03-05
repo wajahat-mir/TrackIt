@@ -57,14 +57,23 @@ namespace TrackIt.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InventoryItem>>> GetInventoryItems()
         {
-            return await _context.InventoryItems.ToListAsync();
+            var inventoryItems = await _context.InventoryItems
+                .Include(item => item.Dimension)
+                .Include(item => item.Brand)
+                    .ThenInclude(brand => brand.CompanyAddress)
+                .ToListAsync();
+            return inventoryItems;
         }
 
         // GET: api/Inventory/5
         [HttpGet("{id}")]
         public async Task<ActionResult<InventoryItem>> GetInventoryItem(long id)
         {
-            var inventoryItem = await _context.InventoryItems.FindAsync(id);
+            var inventoryItem = await _context.InventoryItems
+                .Include(item => item.Dimension)
+                .Include(item => item.Brand)
+                    .ThenInclude(brand => brand.CompanyAddress)
+                .FirstOrDefaultAsync(item => item.Id == id);
 
             if (inventoryItem == null)
             {
@@ -78,7 +87,11 @@ namespace TrackIt.Controllers
         [HttpGet("ByName/{Name}")]
         public async Task<ActionResult<InventoryItem>> GetInventoryItemByNameAsync(string name)
         {
-            InventoryItem inventoryItem = await _context.InventoryItems.SingleAsync(i => i.ItemName == name);
+            InventoryItem inventoryItem = await _context.InventoryItems
+                .Include(item => item.Dimension)
+                .Include(item => item.Brand)
+                    .ThenInclude(brand => brand.CompanyAddress)
+                .FirstOrDefaultAsync(i => i.ItemName == name);
 
             if (inventoryItem == null)
             {
@@ -120,7 +133,11 @@ namespace TrackIt.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<InventoryItem>> DeleteInventoryItem(long id)
         {
-            var inventoryItem = await _context.InventoryItems.FindAsync(id);
+            var inventoryItem = await _context.InventoryItems.Include(item => item.Dimension)
+                .Include(item => item.Brand)
+                    .ThenInclude(brand => brand.CompanyAddress)
+                .FirstOrDefaultAsync(item => item.Id == id);
+
             if (inventoryItem == null)
             {
                 return NotFound();

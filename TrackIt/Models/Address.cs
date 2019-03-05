@@ -11,8 +11,6 @@ namespace TrackIt.Models
     {
         public long Id { get; set; }
 
-        public Brand Brand { get; set; }
-
         [Required]
         public string AddressLine1 { get; set; }
 

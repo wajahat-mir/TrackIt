@@ -16,7 +16,5 @@ namespace TrackIt.Models
 
         public long AddressId { get; set; }
         public Address CompanyAddress { get; set; }
-
-        public List<InventoryItem> InventoryItems { get; set; }
     }
 }
