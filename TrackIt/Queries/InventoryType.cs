@@ -15,6 +15,8 @@ namespace TrackIt.Queries
             Field(x => x.ItemName).Description("Name of an Inventory Item");
             Field(x => x.Cost).Description("Cost of the Inventory Item");
             Field(x => x.Quantity).Description("Number of units available");
+            Field<DimensionType>("dimension");
+            Field<BrandType>("brand");
         }
     }
 }
