@@ -18,7 +18,5 @@ namespace TrackIt.Models
         public long depth { get; set; }
         [Required]
         public string units { get; set; }
-
-        public InventoryItem InventoryItem { get; set; }
     }
 }
