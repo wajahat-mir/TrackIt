@@ -20,6 +20,16 @@ namespace TrackIt.Queries
                     return inventoryService.GetInventoryById(id);
                 }
             );
+            Field<BrandType>(
+                name: "brand",
+                arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
+                resolve: context =>
+                {
+                    var id = context.GetArgument<int>("id");
+                    return inventoryService.GetBrandById(id);
+                }
+            );
+
         }
     }
 }
