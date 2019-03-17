@@ -21,53 +21,22 @@ namespace TrackIt.Controllers
         public InventoryController(InventoryContext context)
         {
             _context = context;
-
-            if (_context.InventoryItems.Count() == 0)
-            {
-                _context.InventoryItems.Add(new InventoryItem
-                {
-                    ItemName = "Toaster",
-                    Cost = 6.93,
-                    Quantity = 1,
-                    Dimension = new Dimension
-                    {
-                        length = 1,
-                        width = 2,
-                        depth = 3,
-                        units = "cm"
-                    },
-                    Brand = new Brand
-                    {
-                        Name = "ToastMaster",
-                        ContactPhone = "1234567980",
-                        CompanyAddress = new Address
-                        {
-                            AddressLine1 = "123 Alphabet Street",
-                            State = "NY",
-                            PostalCode = "12345",
-                            City = "New York",
-                            Country = "USA"
-                        }
-                    }
-                });
-                _context.SaveChanges();
-            }
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<InventoryItem>>> GetInventoryItems()
+        public async Task<IActionResult> GetInventoryItems()
         {
             var inventoryItems = await _context.InventoryItems
                 .Include(item => item.Dimension)
                 .Include(item => item.Brand)
                     .ThenInclude(brand => brand.CompanyAddress)
                 .ToListAsync();
-            return inventoryItems;
+            return Ok(inventoryItems);
         }
 
         // GET: api/Inventory/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<InventoryItem>> GetInventoryItem(long id)
+        public async Task<IActionResult> GetInventoryItem(long id)
         {
             var inventoryItem = await _context.InventoryItems
                 .Include(item => item.Dimension)
@@ -80,12 +49,12 @@ namespace TrackIt.Controllers
                 return NotFound();
             }
 
-            return inventoryItem;
+            return Ok(inventoryItem);
         }
 
         // GET: api/Inventory/Toaster
         [HttpGet("ByName/{Name}")]
-        public async Task<ActionResult<InventoryItem>> GetInventoryItemByNameAsync(string name)
+        public async Task<IActionResult> GetInventoryItemByNameAsync(string name)
         {
             InventoryItem inventoryItem = await _context.InventoryItems
                 .Include(item => item.Dimension)
@@ -98,18 +67,23 @@ namespace TrackIt.Controllers
                 return NotFound();
             }
 
-            return inventoryItem;
+            return Ok(inventoryItem);
         }
 
         // POST: api/Inventory
         [HttpPost]
         [ValidateModel]
-        public async Task<ActionResult<InventoryItem>> PostInventoryItem(InventoryItem inventoryItem)
+        public async Task<IActionResult> PostInventoryItem(InventoryItem inventoryItem)
         {
-            _context.InventoryItems.Add(inventoryItem);
-            await _context.SaveChangesAsync();
+            if (ModelState.IsValid)
+            {
+                _context.InventoryItems.Add(inventoryItem);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetInventoryItem", new { id = inventoryItem.Id }, inventoryItem);
+                return CreatedAtAction("GetInventoryItem", new { id = inventoryItem.Id }, inventoryItem);
+            }
+            else
+                return BadRequest();            
         }
 
         // PUT: api/Inventory/5
@@ -119,9 +93,10 @@ namespace TrackIt.Controllers
         {
 
             if (id != inventoryItem.Id)
-            {
                 return BadRequest();
-            }
+
+            if (!ModelState.IsValid)
+                return BadRequest();
 
             _context.Entry(inventoryItem).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -131,7 +106,7 @@ namespace TrackIt.Controllers
 
         // DELETE: api/Inventory/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<InventoryItem>> DeleteInventoryItem(long id)
+        public async Task<IActionResult> DeleteInventoryItem(long id)
         {
             var inventoryItem = await _context.InventoryItems.Include(item => item.Dimension)
                 .Include(item => item.Brand)
@@ -146,7 +121,7 @@ namespace TrackIt.Controllers
             _context.InventoryItems.Remove(inventoryItem);
             await _context.SaveChangesAsync();
 
-            return inventoryItem;
+            return Ok(inventoryItem);
         }
 
     }

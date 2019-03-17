@@ -10,7 +10,7 @@ namespace TrackIt.Models
     {
         public long Id { get; set; }
 
-        [Required, MaxLength(100)]
+        [Required(AllowEmptyStrings = false)]
         public string ItemName { get; set; }
 
         [Required, DataType(DataType.Currency)]
