@@ -18,15 +18,17 @@ namespace TrackIt.Controllers
     public class GraphQlController : ControllerBase
     {
         private readonly InventoryService _inventoryService;
-        public GraphQlController(InventoryService inventoryService)
+        private readonly BrandService _brandService;
+        public GraphQlController(InventoryService inventoryService, BrandService brandService)
         {
             _inventoryService = inventoryService;
+            _brandService = brandService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] GraphQlQuery query)
         {
-            var schema = new Schema { Query = new InventoryQuery(_inventoryService) };
+            var schema = new Schema { Query = new InventoryQuery(_inventoryService, _brandService) };
             var result = await new DocumentExecuter().ExecuteAsync(x =>
             {
                 x.Schema = schema;
