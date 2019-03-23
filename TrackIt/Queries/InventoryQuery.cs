@@ -9,7 +9,7 @@ namespace TrackIt.Queries
 {
     public class InventoryQuery : ObjectGraphType
     {
-        public InventoryQuery(InventoryService inventoryService)
+        public InventoryQuery(InventoryService inventoryService, BrandService brandservice)
         {
             Field<InventoryType>(
                 name: "inventory",
@@ -20,6 +20,16 @@ namespace TrackIt.Queries
                     return inventoryService.GetInventoryById(id);
                 }
             );
+            Field<BrandType>(
+                name: "brand",
+                arguments: new QueryArguments(new QueryArgument<IntGraphType> { Name = "id" }),
+                resolve: context =>
+                {
+                    var id = context.GetArgument<int>("id");
+                    return brandservice.GetBrandById(id);
+                }
+            );
+
         }
     }
 }

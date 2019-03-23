@@ -14,7 +14,9 @@ namespace TrackIt.Models
         [Required]
         public string ContactPhone { get; set; }
 
+        [Required]
         public long AddressId { get; set; }
+        [Required]
         public Address CompanyAddress { get; set; }
     }
 }

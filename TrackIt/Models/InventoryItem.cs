@@ -10,7 +10,7 @@ namespace TrackIt.Models
     {
         public long Id { get; set; }
 
-        [Required, MaxLength(100)]
+        [Required(AllowEmptyStrings = false)]
         public string ItemName { get; set; }
 
         [Required, DataType(DataType.Currency)]
@@ -19,10 +19,14 @@ namespace TrackIt.Models
         [Required]
         public long Quantity { get; set; }
 
+        [Required]
         public long DimensionId { get; set; }
+        [Required]
         public Dimension Dimension { get; set; }
-        
+
+        [Required]
         public long BrandId { get; set; }
+        [Required]
         public Brand Brand { get; set; }
     }
 }
