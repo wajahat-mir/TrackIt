@@ -26,7 +26,9 @@ namespace TrackIt.Queries
                 resolve: context =>
                 {
                     var id = context.GetArgument<int>("id");
+
                     return brandservice.GetBrandById(id);
+
                 }
             );
 
