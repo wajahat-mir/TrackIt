@@ -34,11 +34,13 @@ namespace TrackIt
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-
+            
             var appSettings = appSettingsSection.Get<AppSettings>();
             var connection = appSettings.DBConnectionString;
             services.AddDbContext<InventoryContext>(opt =>
-                opt.UseSqlServer(connection));
+                opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            
+            services.BuildServiceProvider().GetService<InventoryContext>().Database.Migrate();
 
             services.ConfigureCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
