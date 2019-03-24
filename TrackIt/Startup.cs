@@ -47,7 +47,7 @@ namespace TrackIt
             services.AddAutoMapper();
 
             // configure jwt authentication
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes("THE J0KER I$ WILD");
             services.ConfigureAuthentication(key);
 
             // configure DI for application services
