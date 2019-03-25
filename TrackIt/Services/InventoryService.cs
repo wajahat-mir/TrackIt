@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrackIt.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrackIt.Services
 {
@@ -19,7 +20,7 @@ namespace TrackIt.Services
 
     public class InventoryService : IInventoryService
     {
-        private InventoryContext _context;
+        private readonly InventoryContext _context;
 
         public InventoryService(InventoryContext context)
         {
